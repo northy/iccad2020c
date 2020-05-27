@@ -100,7 +100,7 @@ namespace parser {
             error_handler_type error_handler(first, last, std::cerr);
 
             // Our parser
-            auto const parser =
+            auto const parserd =
                 // we pass our error handler to the parser so we can access
                 // it later in our on_error and on_sucess handlers
                 x3::with<x3::error_handler_tag>(std::ref(error_handler))
@@ -113,7 +113,7 @@ namespace parser {
             bool r = x3::phrase_parse(
                 first,                          //  Start Iterator
                 last,                           //  End Iterator
-                parser,                         //  The Parser
+                parserd,                         //  The Parser
                 (space | eol),                  //  The Skip-Parser
                 output
             );

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <parser.hpp>
+#include <compiler.hpp>
 
 #include <unistd.h>
 #include <ios>
@@ -76,6 +77,13 @@ int main(int argc, char** argv) {
                 }
                 cout << '\n';
             }
+        }
+
+        std::ofstream out("out.vcd");
+        if (out.is_open()) {
+            cout << "Compiling file...\n";
+            compiler::compilevcd::compile_vcd_file(result.value(),out);
+            out.close();
         }
     }
     else {
