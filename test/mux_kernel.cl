@@ -1,14 +1,29 @@
-__kernel void mux(__global const short *I0, __global const short *I1, __global const short *I2, __global const short *I3, __global const short *S0, __global const short *S1, __global short *O) {
+__kernel void and3(const short i1, const short i2, const short i3, __local short *o1) {
+    *o1 = i1&&i2&&i3;
+}
+
+__kernel void or4(const short i1, const short i2, const short i3, const short i4, __local short *o1) {
+    *o1 = i1||i2||i3||i4;
+}
+
+__kernel void not1(const short i1, __local short *o1) {
+    *o1 = !i1;
+}
+
+__kernel void mux(__global const short *I0, __global const short *I1, __global const short *I2, __global const short *I3, __global const short *S0, __global const short *S1, __global short *O, const unsigned int n) {    
     // Get the index of the current element to be processed
     int i = get_global_id(0);
-    short m0,m1,m2,m3,ns0,ns1;
-    ns0 = !S0[i];
-    ns1 = !S1[i];
-    m0 = I0[i]&&ns0&&ns1;
-    m1 = I1[i]&&S0[i]&&ns1;
-    m2 = I2[i]&&ns0&&S1[i];
-    m3 = I3[i]&&S0[i]&&S1[i];
+    if (i>=n) return;
+
+    __local short m0,m1,m2,m3,ns0,ns1,o1;
+    not1(S0[i],&ns0);
+    not1(S1[i],&ns1);
+    and3(I0[i],ns0,ns1,&m0);
+    and3(I1[i],S0[i],ns1,&m1);
+    and3(I2[i],ns0,S1[i],&m2);
+    and3(I3[i],S0[i],S1[i],&m3);;
 
     // Do the operation
-    O[i] = m0||m1||m2||m3;
+    or4(m0,m1,m2,m3,&o1);
+    O[i]=o1;
 }
