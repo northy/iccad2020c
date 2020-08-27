@@ -6,11 +6,19 @@ target_link_libraries(TestVcdParse
 )
 
 configure_file(mux_kernel.cl mux_kernel.cl COPYONLY)
+configure_file(test_kernel.cl test_kernel.cl COPYONLY)
 
 add_executable(TestOpenCL test_opencl.cxx)
 target_link_libraries(TestOpenCL
   sources
   OpenCL
+  ${Boost_FILESYSTEM_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+)
+
+add_executable(TestSimulation test_simulation.cxx)
+target_link_libraries(TestSimulation
+  sources
   ${Boost_FILESYSTEM_LIBRARY}
   ${Boost_SYSTEM_LIBRARY}
 )
