@@ -56,11 +56,11 @@ namespace parser {
 
         struct ident_tag;
         x3::rule<ident_tag, std::string> const ident = "identifier";
-        auto const ident_def = x3::lexeme [ +(x3::alnum | x3::punct) > x3::eol];
+        auto const ident_def = x3::lexeme [ +(x3::alnum | x3::punct) > x3::eol ];
 
         struct signal_tag;
         x3::rule<signal_tag, vcd::Signal> const signal = "signal";
-        auto const signal_def = x3::lit("$var") > +x3::alpha > x3::uint_ > x3::lexeme [ +(x3::graph) ] > str > x3::lit("$end");
+        auto const signal_def = x3::lit("$var") > +x3::alpha > x3::uint_ > x3::lexeme [ +(x3::graph) ] > x3::lexeme [ +(x3::graph) ] > x3::lit("$end");
 
         struct value_tag;
         x3::rule<value_tag, char> const value = "value";
