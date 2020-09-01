@@ -16,6 +16,8 @@ target_link_libraries(TestOpenCL
   ${Boost_SYSTEM_LIBRARY}
 )
 
+configure_file(vcd_nand.vcd vcd_nand.vcd COPYONLY)
+
 add_executable(TestSimulation test_simulation.cxx)
 target_link_libraries(TestSimulation
   sources
